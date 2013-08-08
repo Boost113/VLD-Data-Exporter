@@ -126,12 +126,12 @@ std::string VLDDexporter::CommandProcessor::RunCommands(InputProcessor& data){
 	hotfunctions->Rename("Hot functions");
 
 	// summary sheet //
-	BasicExcelWorksheet* summarysheet = xls.GetWorksheet(2);
-	summarysheet->Rename("Summary");
+	//BasicExcelWorksheet* summarysheet = xls.GetWorksheet(2);
+	//summarysheet->Rename("Summary");
 
 	// leaked blocks //
-	BasicExcelWorksheet* leakedblocks = xls.GetWorksheet(3);
-	leakedblocks->Rename("Leaked blocks");
+	//BasicExcelWorksheet* leakedblocks = xls.GetWorksheet(3);
+	//leakedblocks->Rename("Leaked blocks");
 
 
 	XLSFormatManager fmt_mgr(xls);
@@ -153,25 +153,25 @@ std::string VLDDexporter::CommandProcessor::RunCommands(InputProcessor& data){
 	int Col = 0;
 
 	// hot files //
-	for(Col = 2; Col < 6; Col++){
+	for(Col = 0; Col < 4; Col++){
 		// get current cell //
 		BasicExcelCell* cell = hotfilessheet->Cell(Row, Col);
 
 		switch(Col){
-		case 2: { cell->Set("File"); } break;
-		case 3: { cell->Set("Blame count"); } break;
-		case 4: { cell->Set("Lines"); } break;
-		case 5: { cell->Set("Blame gathering function"); } break;
+		case 0: { cell->Set("File"); } break;
+		case 1: { cell->Set("Blame count"); } break;
+		case 2: { cell->Set("Lines"); } break;
+		case 3: { cell->Set("Blame gathering function"); } break;
 		}
 
 
 		cell->SetFormat(fmtheader);
 	}
 	// set proper widths //
-	hotfilessheet->SetColWidth(2, 24000);
-	hotfilessheet->SetColWidth(3, 5000);
-	hotfilessheet->SetColWidth(4, 6000);
-	hotfilessheet->SetColWidth(5, 10000);
+	hotfilessheet->SetColWidth(0, 24000);
+	hotfilessheet->SetColWidth(1, 5000);
+	hotfilessheet->SetColWidth(2, 6000);
+	hotfilessheet->SetColWidth(3, 10000);
 
 	// output data //
 	for(size_t i = 0; i < data.LeakingFiles.size(); i++){
@@ -180,15 +180,15 @@ std::string VLDDexporter::CommandProcessor::RunCommands(InputProcessor& data){
 
 		CallstackFileEntry* file = data.LeakingFiles[i].get();
 
-		for(Col = 2; Col < 6; Col++){
+		for(Col = 0; Col < 4; Col++){
 			// get current cell //
 			BasicExcelCell* cell = hotfilessheet->Cell(Row, Col);
 
 
 			switch(Col){
-			case 2: { cell->Set(file->PathOrName.c_str()); } break;
-			case 3: { cell->SetInteger(file->BlameCount); } break;
-			case 4: 
+			case 0: { cell->Set(file->PathOrName.c_str()); } break;
+			case 1: { cell->SetInteger(file->BlameCount); } break;
+			case 2: 
 				{
 					string lines;
 
@@ -204,7 +204,7 @@ std::string VLDDexporter::CommandProcessor::RunCommands(InputProcessor& data){
 					cell->Set(lines.c_str()); 
 				}
 				break;
-			case 5: { cell->Set(file->FunctionsInfile[0]->Name.c_str()); } break;
+			case 3: { cell->Set(file->FunctionsInfile[0]->Name.c_str()); } break;
 			}
 
 
@@ -215,15 +215,15 @@ std::string VLDDexporter::CommandProcessor::RunCommands(InputProcessor& data){
 	Row = 0;
 	Col = 0;
 	// output hot functions //
-	for(Col = 2; Col < 6; Col++){
+	for(Col = 0; Col < 4; Col++){
 		// get current cell //
 		BasicExcelCell* cell = hotfunctions->Cell(Row, Col);
 
 		switch(Col){
-		case 2: { cell->Set("Function"); } break;
-		case 3: { cell->Set("Blame count"); } break;
-		case 4: { cell->Set("File"); } break;
-		case 5: { cell->Set("Line"); } break;
+		case 0: { cell->Set("Function"); } break;
+		case 1: { cell->Set("Blame count"); } break;
+		case 2: { cell->Set("File"); } break;
+		case 3: { cell->Set("Line"); } break;
 		}
 
 
@@ -231,9 +231,9 @@ std::string VLDDexporter::CommandProcessor::RunCommands(InputProcessor& data){
 	}
 
 	// set proper widths //
-	hotfunctions->SetColWidth(2, 32000);
-	hotfunctions->SetColWidth(3, 5000);
-	hotfunctions->SetColWidth(4, 24000);
+	hotfunctions->SetColWidth(0, 32000);
+	hotfunctions->SetColWidth(1, 5000);
+	hotfunctions->SetColWidth(2, 24000);
 
 	// output data //
 	for(size_t i = 0; i < data.LeakingFunctions.size(); i++){
@@ -242,15 +242,15 @@ std::string VLDDexporter::CommandProcessor::RunCommands(InputProcessor& data){
 
 		CallstackFunction* func = data.LeakingFunctions[i].get();
 
-		for(Col = 2; Col < 6; Col++){
+		for(Col = 0; Col < 4; Col++){
 			// get current cell //
 			BasicExcelCell* cell = hotfunctions->Cell(Row, Col);
 
 			switch(Col){
-			case 2: { cell->Set(func->Name.c_str()); } break;
-			case 3: { cell->SetInteger(func->BlameCount); } break;
-			case 4: { cell->Set(func->ContainedInFile->PathOrName.c_str()); } break;
-			case 5: { cell->SetInteger(func->Line); } break;
+			case 0: { cell->Set(func->Name.c_str()); } break;
+			case 1: { cell->SetInteger(func->BlameCount); } break;
+			case 2: { cell->Set(func->ContainedInFile->PathOrName.c_str()); } break;
+			case 3: { cell->SetInteger(func->Line); } break;
 			}
 
 
